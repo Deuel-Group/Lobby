@@ -1,6 +1,6 @@
-package com.jmsgvn.listener;
+package com.jmsgvn.lobby.listener;
 
-import com.jmsgvn.Lobby;
+import com.jmsgvn.lobby.Lobby;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;

@@ -1,4 +1,4 @@
-package com.jmsgvn.listener;
+package com.jmsgvn.lobby.listener;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

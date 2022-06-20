@@ -1,6 +1,6 @@
-package com.jmsgvn.command;
+package com.jmsgvn.lobby.command;
 
-import com.jmsgvn.Lobby;
+import com.jmsgvn.lobby.Lobby;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;

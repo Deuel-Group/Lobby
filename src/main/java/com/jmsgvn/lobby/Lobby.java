@@ -1,8 +1,9 @@
-package com.jmsgvn;
+package com.jmsgvn.lobby;
 
-import com.jmsgvn.command.SetSpawnCommand;
-import com.jmsgvn.command.SpawnCommand;
-import com.jmsgvn.listener.*;
+import com.jmsgvn.deuellib.tab.TabManager;
+import com.jmsgvn.lobby.listener.*;
+import com.jmsgvn.lobby.tab.*;
+import com.jmsgvn.lobby.command.*;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -57,7 +58,6 @@ public class Lobby extends JavaPlugin {
         super.onDisable();
         long start = System.currentTimeMillis();
 
-        getServer().getConsoleSender().sendMessage("");
         getServer().getConsoleSender().sendMessage(ChatColor.RED + "Lobby has been "
             + "disabled(" + (System.currentTimeMillis() - start) + " ms)");
     }
@@ -82,6 +82,8 @@ public class Lobby extends JavaPlugin {
      * Sets default values for all worlds so the lobby experience is flawless
      */
     private void loadSettings() {
+
+        TabManager.setProvider(new Provider());
 
         spawns = new HashMap<>();
 

@@ -1,6 +1,6 @@
-package com.jmsgvn.listener;
+package com.jmsgvn.lobby.listener;
 
-import com.jmsgvn.Lobby;
+import com.jmsgvn.lobby.Lobby;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

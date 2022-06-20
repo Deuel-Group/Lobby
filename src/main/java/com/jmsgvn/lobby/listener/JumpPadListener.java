@@ -1,4 +1,4 @@
-package com.jmsgvn.listener;
+package com.jmsgvn.lobby.listener;
 
 import org.bukkit.Effect;
 import org.bukkit.Material;
