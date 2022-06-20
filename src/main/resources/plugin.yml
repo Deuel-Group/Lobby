@@ -1,0 +1,13 @@
+name: ${project.name}
+version: ${project.version} (Build ${git.commit.id.abbrev}, ${git.commit.time})
+description: ${project.description}
+author: jmsgvn
+main: com.jmsgvn.Lobby
+commands:
+  setspawn:
+    description: Set the world spawn-point
+    usage: /<command>
+    permission: lobby.setspawn
+  spawn:
+    description: Teleport to the world's spawn
+    usage: /<command>

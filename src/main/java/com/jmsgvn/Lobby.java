@@ -1,20 +1,30 @@
 package com.jmsgvn;
 
-import com.jmsgvn.listener.PlayerJoinListener;
-import com.jmsgvn.listener.PlayerQuitListener;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Difficulty;
-import org.bukkit.World;
+import com.jmsgvn.command.SetSpawnCommand;
+import com.jmsgvn.command.SpawnCommand;
+import com.jmsgvn.listener.*;
+import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Handles the creation and destruction of the plugin.
  */
 public class Lobby extends JavaPlugin {
 
+    /**
+     * Instance of JavaPlugin
+     */
     private static Lobby instance;
+
+    /**
+     * Used to store the location of spawns. This is done to allow for custom world spawns that take
+     * exact player position into account.
+     */
+    private static Map<String, Location> spawns;
 
     /**
      * Enables all essential classes for the plugin to function
@@ -22,12 +32,22 @@ public class Lobby extends JavaPlugin {
     @Override public void onEnable() {
         super.onEnable();
 
+        getServer().getConsoleSender().sendMessage(ChatColor.YELLOW + "Loading Lobby...");
+        getServer().getConsoleSender().sendMessage("");
+
+        long start = System.currentTimeMillis();
+
+        saveDefaultConfig();
+
         instance = this;
 
         loadListeners();
         loadSettings();
+        loadCommands();
 
-        getLogger().info(ChatColor.GREEN + "Lobby has been enabled.");
+        getServer().getConsoleSender().sendMessage("");
+        getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "Lobby has been "
+            + "enabled (" + (System.currentTimeMillis() - start) + " ms)");
     }
 
     /**
@@ -35,7 +55,11 @@ public class Lobby extends JavaPlugin {
      */
     @Override public void onDisable() {
         super.onDisable();
-        getLogger().info(ChatColor.RED + "Lobby has been disabled.");
+        long start = System.currentTimeMillis();
+
+        getServer().getConsoleSender().sendMessage("");
+        getServer().getConsoleSender().sendMessage(ChatColor.RED + "Lobby has been "
+            + "disabled(" + (System.currentTimeMillis() - start) + " ms)");
     }
 
     /**
@@ -44,14 +68,30 @@ public class Lobby extends JavaPlugin {
     private void loadListeners() {
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerQuitListener(), this);
-        getLogger().info(ChatColor.YELLOW + "Listeners have been enabled.");
+        Bukkit.getPluginManager().registerEvents(new EntityDamageListener(), this);
+        Bukkit.getPluginManager().registerEvents(new GeneralPreventionListener(), this);
+        Bukkit.getPluginManager().registerEvents(new DoubleJumpListener(), this);
+        Bukkit.getPluginManager().registerEvents(new JumpPadListener(), this);
+
+        getServer().getConsoleSender().sendMessage("");
+        getServer().getConsoleSender().sendMessage(ChatColor.YELLOW + "    Listeners have been enabled");
+        getServer().getConsoleSender().sendMessage("");
     }
 
     /**
      * Sets default values for all worlds so the lobby experience is flawless
      */
     private void loadSettings() {
+
+        spawns = new HashMap<>();
+
+        getServer().getConsoleSender().sendMessage("");
+
         for (World world : Bukkit.getWorlds()) {
+
+            getServer().getConsoleSender().sendMessage(ChatColor.YELLOW + "    World " + world.getName() + "'s"
+                + " settings are being loaded");
+
             world.setDifficulty(Difficulty.PEACEFUL);
             world.setAmbientSpawnLimit(0);
             world.setAnimalSpawnLimit(0);
@@ -74,12 +114,60 @@ public class Lobby extends JavaPlugin {
                 }
             }
 
-            getLogger().info(ChatColor.YELLOW + "World " + world.getName() + "'s"
-                + " settings have been successfully applied.");
+            if (getConfig().contains("spawn-point." + world.getName())) {
+                double x = getConfig().getDouble("spawn-point." + world.getName() + ".x");
+                double y = getConfig().getDouble("spawn-point." + world.getName() + ".y");
+                double z = getConfig().getDouble("spawn-point." + world.getName() + ".z");
+                float pitch = Float.parseFloat(getConfig().getString("spawn-point." + world.getName() + ".pitch"));
+                float yaw = Float.parseFloat(getConfig().getString("spawn-point." + world.getName() + ".yaw"));
+
+                Location location = new Location(world, x, y, z, yaw, pitch);
+                spawns.put(world.getName(), location);
+                getServer().getConsoleSender().sendMessage(ChatColor.YELLOW + "        " + world.getName() + " spawn set");
+            }
         }
+
+        getServer().getConsoleSender().sendMessage("");
     }
 
+
+    /**
+     * Load the server commands
+     */
+    private void loadCommands() {
+        this.getCommand("setspawn").setExecutor(new SetSpawnCommand());
+        this.getCommand("spawn").setExecutor(new SpawnCommand());
+
+        getServer().getConsoleSender().sendMessage("");
+        getServer().getConsoleSender().sendMessage(ChatColor.YELLOW + "    Commands have been enabled");
+        getServer().getConsoleSender().sendMessage("");
+    }
+
+    /**
+     * Static method to get the lobby plugin instance
+     * @return Lobby
+     */
     public static Lobby getInstance() {
         return instance;
+    }
+
+    /**
+     * Get the world spawn location. If there is no saved location a null location will be returned
+     *
+     * @param world the name of the world
+     * @return the saved location of the worlds spawn.
+     */
+    public static Location getWorldSpawn(String world) {
+        return spawns.get(world);
+    }
+
+    /**
+     * Update a worlds spawn location
+     *
+     * @param world the world to be updated
+     * @param location the new spawn location to be set
+     */
+    public static void updateSpawnLocation(World world, Location location) {
+        spawns.put(world.getName(), location);
     }
 }
