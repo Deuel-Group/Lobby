@@ -82,9 +82,7 @@ public class Lobby extends JavaPlugin {
 
         TabManager.setProvider(new TProvider());
         ScoreboardManager.setProvider(new SProvider());
-        ScoreboardManager.setScoreboardTitle(
-            ChatColor.YELLOW + "" + ChatColor.BOLD + "The Server" + ChatColor.RESET + ""
-                + ChatColor.GRAY + " \uFF5C " + ChatColor.YELLOW + "Lobby");
+
         spawns = new HashMap<>();
 
         getServer().getConsoleSender().sendMessage("");

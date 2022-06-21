@@ -13,10 +13,19 @@ import java.util.LinkedList;
 public class SProvider implements ScoreboardProvider {
     @Override public void provide(LinkedList<String> linkedList, Player player) {
         linkedList.add(ChatColor.GRAY + "" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "--------------------");
-        linkedList.add("");
+        linkedList.add("&c    ");
         linkedList.add(ChatColor.YELLOW + "Welcome " + player.getName());
-        linkedList.add(ChatColor.YELLOW + "Ping " + ChatColor.GOLD + ((CraftPlayer) player).getHandle().ping + "ms");
-        linkedList.add("");
+
+        int x = player.getLocation().getBlockX();
+        int y = player.getLocation().getBlockY();
+        int z = player.getLocation().getBlockZ();
+
+        linkedList.add("&e*" + x + ", " + y + ",  " + z);
+        linkedList.add("&c    ");
         linkedList.add(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "--------------------");
+    }
+
+    @Override public String title(Player player) {
+        return "&e&lThe Lobby &7- &eLobby";
     }
 }

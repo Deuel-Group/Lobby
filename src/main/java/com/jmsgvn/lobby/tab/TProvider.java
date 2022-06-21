@@ -16,7 +16,7 @@ public class TProvider implements TabProvider {
         layout.set(1, 3, ChatColor.GREEN + "Welcome");
         layout.set(2, 3, ChatColor.GREEN + player.getName());
 
-        layout.set(1, 4, ChatColor.GOLD + "Position");
+        layout.set(1, 4, "&6Position");
 
         int x = player.getLocation().getBlockX();
         int y = player.getLocation().getBlockY();
