@@ -1,6 +1,7 @@
 # Lobby
-A plugin designed for Minecraft version 1.8.8. As of now this plugin is bare-bones spigot. 
-A library developed by Deuel will be implemented in future versions. This will be open source.
+A plugin designed for Minecraft version 1.8.8.
 
-# To-do
-* Implement Deuel Library
+# Development
+Developing Lobby has been designed to be easy. Lobby depends on 
+**[DeuelLib](https://github.com/Deuel-Group/DeuelLib)** and you will need to 
+`mvn clean install` the git repository on your local machine in order to work with Lobby.

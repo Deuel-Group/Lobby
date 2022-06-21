@@ -18,11 +18,6 @@ import java.util.Map;
 public class Lobby extends JavaPlugin {
 
     /**
-     * Instance of JavaPlugin
-     */
-    private static Lobby instance;
-
-    /**
      * Used to store the location of spawns. This is done to allow for custom world spawns that take
      * exact player position into account.
      */
@@ -40,8 +35,6 @@ public class Lobby extends JavaPlugin {
         long start = System.currentTimeMillis();
 
         saveDefaultConfig();
-
-        instance = this;
 
         loadListeners();
         loadSettings();
@@ -163,7 +156,7 @@ public class Lobby extends JavaPlugin {
      * @return Lobby
      */
     public static Lobby getInstance() {
-        return instance;
+        return JavaPlugin.getPlugin(Lobby.class);
     }
 
     /**

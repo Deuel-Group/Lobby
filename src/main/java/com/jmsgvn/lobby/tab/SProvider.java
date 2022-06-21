@@ -7,6 +7,9 @@ import org.bukkit.entity.Player;
 
 import java.util.LinkedList;
 
+/**
+ * Provide the scoreboard for all players online
+ */
 public class SProvider implements ScoreboardProvider {
     @Override public void provide(LinkedList<String> linkedList, Player player) {
         linkedList.add(ChatColor.GRAY + "" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "--------------------");

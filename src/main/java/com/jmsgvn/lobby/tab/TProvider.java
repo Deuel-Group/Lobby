@@ -6,6 +6,9 @@ import com.jmsgvn.deuellib.tab.common.TabListCommons;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+/**
+ * Provide the tab for all players online
+ */
 public class TProvider implements TabProvider {
     @Override public TabLayout provide(Player player) {
         TabLayout layout = new TabLayout();
