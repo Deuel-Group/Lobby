@@ -1,5 +1,6 @@
 package com.jmsgvn.lobby;
 
+import com.jmsgvn.deuellib.scoreboard.ScoreboardManager;
 import com.jmsgvn.deuellib.tab.TabManager;
 import com.jmsgvn.lobby.listener.*;
 import com.jmsgvn.lobby.tab.*;
@@ -47,8 +48,9 @@ public class Lobby extends JavaPlugin {
         loadCommands();
 
         getServer().getConsoleSender().sendMessage("");
-        getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "Lobby has been "
-            + "enabled (" + (System.currentTimeMillis() - start) + " ms)");
+        getServer().getConsoleSender().sendMessage(
+            ChatColor.GREEN + "Lobby has been " + "enabled (" + (System.currentTimeMillis() - start)
+                + " ms)");
     }
 
     /**
@@ -58,8 +60,9 @@ public class Lobby extends JavaPlugin {
         super.onDisable();
         long start = System.currentTimeMillis();
 
-        getServer().getConsoleSender().sendMessage(ChatColor.RED + "Lobby has been "
-            + "disabled(" + (System.currentTimeMillis() - start) + " ms)");
+        getServer().getConsoleSender().sendMessage(
+            ChatColor.RED + "Lobby has been " + "disabled(" + (System.currentTimeMillis() - start)
+                + " ms)");
     }
 
     /**
@@ -74,7 +77,8 @@ public class Lobby extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new JumpPadListener(), this);
 
         getServer().getConsoleSender().sendMessage("");
-        getServer().getConsoleSender().sendMessage(ChatColor.YELLOW + "    Listeners have been enabled");
+        getServer().getConsoleSender()
+            .sendMessage(ChatColor.YELLOW + "    Listeners have been enabled");
         getServer().getConsoleSender().sendMessage("");
     }
 
@@ -83,16 +87,20 @@ public class Lobby extends JavaPlugin {
      */
     private void loadSettings() {
 
-        TabManager.setProvider(new Provider());
-
+        TabManager.setProvider(new TProvider());
+        ScoreboardManager.setProvider(new SProvider());
+        ScoreboardManager.setScoreboardTitle(
+            ChatColor.YELLOW + "" + ChatColor.BOLD + "The Server" + ChatColor.RESET + ""
+                + ChatColor.GRAY + " \uFF5C " + ChatColor.YELLOW + "Lobby");
         spawns = new HashMap<>();
 
         getServer().getConsoleSender().sendMessage("");
 
         for (World world : Bukkit.getWorlds()) {
 
-            getServer().getConsoleSender().sendMessage(ChatColor.YELLOW + "    World " + world.getName() + "'s"
-                + " settings are being loaded");
+            getServer().getConsoleSender().sendMessage(
+                ChatColor.YELLOW + "    World " + world.getName() + "'s"
+                    + " settings are being loaded");
 
             world.setDifficulty(Difficulty.PEACEFUL);
             world.setAmbientSpawnLimit(0);
@@ -110,8 +118,8 @@ public class Lobby extends JavaPlugin {
                     continue;
                 }
 
-                if (entity instanceof LivingEntity || entity instanceof Item ||
-                    entity instanceof ExperienceOrb) {
+                if (entity instanceof LivingEntity || entity instanceof Item
+                    || entity instanceof ExperienceOrb) {
                     entity.remove();
                 }
             }
@@ -120,12 +128,15 @@ public class Lobby extends JavaPlugin {
                 double x = getConfig().getDouble("spawn-point." + world.getName() + ".x");
                 double y = getConfig().getDouble("spawn-point." + world.getName() + ".y");
                 double z = getConfig().getDouble("spawn-point." + world.getName() + ".z");
-                float pitch = Float.parseFloat(getConfig().getString("spawn-point." + world.getName() + ".pitch"));
-                float yaw = Float.parseFloat(getConfig().getString("spawn-point." + world.getName() + ".yaw"));
+                float pitch = Float.parseFloat(
+                    getConfig().getString("spawn-point." + world.getName() + ".pitch"));
+                float yaw = Float.parseFloat(
+                    getConfig().getString("spawn-point." + world.getName() + ".yaw"));
 
                 Location location = new Location(world, x, y, z, yaw, pitch);
                 spawns.put(world.getName(), location);
-                getServer().getConsoleSender().sendMessage(ChatColor.YELLOW + "        " + world.getName() + " spawn set");
+                getServer().getConsoleSender()
+                    .sendMessage(ChatColor.YELLOW + "        " + world.getName() + " spawn set");
             }
         }
 
@@ -141,12 +152,14 @@ public class Lobby extends JavaPlugin {
         this.getCommand("spawn").setExecutor(new SpawnCommand());
 
         getServer().getConsoleSender().sendMessage("");
-        getServer().getConsoleSender().sendMessage(ChatColor.YELLOW + "    Commands have been enabled");
+        getServer().getConsoleSender()
+            .sendMessage(ChatColor.YELLOW + "    Commands have been enabled");
         getServer().getConsoleSender().sendMessage("");
     }
 
     /**
      * Static method to get the lobby plugin instance
+     *
      * @return Lobby
      */
     public static Lobby getInstance() {
@@ -166,7 +179,7 @@ public class Lobby extends JavaPlugin {
     /**
      * Update a worlds spawn location
      *
-     * @param world the world to be updated
+     * @param world    the world to be updated
      * @param location the new spawn location to be set
      */
     public static void updateSpawnLocation(World world, Location location) {
