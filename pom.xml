@@ -17,6 +17,8 @@
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
     </properties>
 
+
+
     <build>
         <plugins>
             <plugin>
@@ -65,6 +67,52 @@
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <id>scp-to-remote</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <!-- keyfile+passphrase or  password, choose one -->
+                                <!--
+                                <scp localFile="${project.basedir}/target/qos-spark-1.0.jar"
+                                  remoteToFile="root@192.168.203.156:/usr/sanss" verbose="true"
+                                  keyfile="C:\Users\shengw\.ssh\192.168.203.156\id_rsa"
+                                  passphrase="">
+                                </scp>
+                                 -->
+                                <scp localFile="${project.basedir}/target/Lobby-1.0-SNAPSHOT.jar"
+                                     remoteToFile="james@percy.jmsgvn.com:/home/james/Bungeecord/Lobby/plugins" verbose="true"
+                                     password="${env.PASSWORD}" trust="true">
+                                </scp>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+                <!-- libraries for scp impl      -->
+                <!-- antrun doesn't use os's scp -->
+                <dependencies>
+                    <dependency>
+                        <groupId>com.jcraft</groupId>
+                        <artifactId>jsch</artifactId>
+                        <version>0.1.53</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>ant</groupId>
+                        <artifactId>ant-jsch</artifactId>
+                        <version>1.6.5</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
         </plugins>
         <resources>
             <resource>
