@@ -3,6 +3,7 @@ package com.jmsgvn.lobby.tab;
 import com.jmsgvn.deuellib.tab.TabLayout;
 import com.jmsgvn.deuellib.tab.TabProvider;
 import com.jmsgvn.deuellib.tab.common.TabListCommons;
+import com.jmsgvn.deuellib.util.Redis;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -28,6 +29,7 @@ public class TProvider implements TabProvider {
         layout.setFooter(ChatColor.YELLOW + "play.lobby.com");
 
         layout.setSkinTextures(2, 3, TabListCommons.TV_TEXTURE);
+
         return layout;
     }
 }

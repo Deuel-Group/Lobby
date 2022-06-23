@@ -89,8 +89,8 @@
                                   passphrase="">
                                 </scp>
                                  -->
-                                <scp localFile="${project.basedir}/target/Lobby-1.0-SNAPSHOT.jar"
-                                     remoteToFile="james@percy.jmsgvn.com:/home/james/Bungeecord/Lobby/plugins" verbose="true"
+                                <scp localFile="${project.basedir}/target/${project.name}-${project.version}.jar"
+                                     remoteToFile="${env.PERCY}/home/james/Bungeecord/Lobby/plugins" verbose="true"
                                      password="${env.PASSWORD}" trust="true">
                                 </scp>
                             </target>

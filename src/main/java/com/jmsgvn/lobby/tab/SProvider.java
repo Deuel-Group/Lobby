@@ -1,8 +1,8 @@
 package com.jmsgvn.lobby.tab;
 
 import com.jmsgvn.deuellib.scoreboard.ScoreboardProvider;
+import com.jmsgvn.deuellib.util.Redis;
 import org.bukkit.ChatColor;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.LinkedList;
@@ -21,7 +21,26 @@ public class SProvider implements ScoreboardProvider {
         int z = player.getLocation().getBlockZ();
 
         linkedList.add("&e*" + x + ", " + y + ",  " + z);
-        linkedList.add("&c    ");
+
+        String queue = Redis.get("overwatch." + player.getUniqueId().toString());
+
+        if (!queue.equalsIgnoreCase("-1")) {
+
+            String[] response = queue.split(",");
+
+            if (response.length == 3) {
+                String name = response[0];
+                String pos = response[1];
+                String size = response[2];
+
+                linkedList.add("&d    ");
+                linkedList.add("&eQueue: &6" + name);
+                linkedList.add("&ePosition: &6*" + pos + "/" + size);
+            }
+        } else {
+            linkedList.add("&c    ");
+        }
+
         linkedList.add(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "--------------------");
     }
 
