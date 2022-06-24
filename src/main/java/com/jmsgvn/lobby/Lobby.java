@@ -1,13 +1,16 @@
 package com.jmsgvn.lobby;
 
+import com.jmsgvn.deuellib.DeuelLib;
 import com.jmsgvn.deuellib.scoreboard.ScoreboardManager;
 import com.jmsgvn.deuellib.tab.TabManager;
 import com.jmsgvn.lobby.listener.*;
 import com.jmsgvn.lobby.tab.*;
 import com.jmsgvn.lobby.command.*;
+import com.jmsgvn.lobby.util.PubSub;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.plugin.java.JavaPlugin;
+import redis.clients.jedis.Jedis;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -86,6 +89,13 @@ public class Lobby extends JavaPlugin {
         spawns = new HashMap<>();
 
         getServer().getConsoleSender().sendMessage("");
+
+        Bukkit.getScheduler().runTaskAsynchronously(this, ()->{
+            try (Jedis jedis = DeuelLib.getPool().getResource()) {
+                jedis.subscribe(new PubSub(), "overwatch");
+                getServer().getConsoleSender().sendMessage(ChatColor.YELLOW + "    PubSub enabled");
+            }
+        });
 
         for (World world : Bukkit.getWorlds()) {
 
