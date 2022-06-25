@@ -17,6 +17,11 @@ public class SProvider implements ScoreboardProvider {
 
     private static Map<UUID, String> queues = new HashMap<>();
     @Override public void provide(LinkedList<String> linkedList, Player player) {
+
+        if (player == null) {
+            return;
+        }
+
         linkedList.add(ChatColor.GRAY + "" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "--------------------");
         linkedList.add("&c    ");
         linkedList.add(ChatColor.YELLOW + "Welcome " + player.getName());

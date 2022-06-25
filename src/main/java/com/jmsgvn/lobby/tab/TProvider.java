@@ -1,9 +1,10 @@
 package com.jmsgvn.lobby.tab;
 
+import com.jmsgvn.deuellib.DeuelLib;
 import com.jmsgvn.deuellib.tab.TabLayout;
 import com.jmsgvn.deuellib.tab.TabProvider;
 import com.jmsgvn.deuellib.tab.common.TabListCommons;
-import com.jmsgvn.deuellib.util.Redis;
+import net.luckperms.api.model.user.User;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -25,6 +26,18 @@ public class TProvider implements TabProvider {
 
         layout.set(2, 4, ChatColor.GOLD + "(" + x + ", " + y + ", " + z + ")");
 
+        layout.set(1, 5, "&3Rank");
+
+        User user = DeuelLib.getInstance().getLuckPerms().getUserManager().getUser(player.getUniqueId());
+
+        if (user != null) {
+            String prefix = user.getCachedData().getMetaData().getPrefix();
+            if (prefix == null) {
+                prefix = "";
+            }
+            layout.set(2, 5, ChatColor.translateAlternateColorCodes('&', prefix.trim()));
+        }
+
         layout.setHeader(ChatColor.YELLOW + "Lobby");
         layout.setFooter(ChatColor.YELLOW + "play.lobby.com");
 
@@ -32,4 +45,6 @@ public class TProvider implements TabProvider {
 
         return layout;
     }
+
+
 }

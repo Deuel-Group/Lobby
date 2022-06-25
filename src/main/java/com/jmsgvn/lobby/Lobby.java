@@ -32,9 +32,6 @@ public class Lobby extends JavaPlugin {
     @Override public void onEnable() {
         super.onEnable();
 
-        getServer().getConsoleSender().sendMessage(ChatColor.YELLOW + "Loading Lobby...");
-        getServer().getConsoleSender().sendMessage("");
-
         long start = System.currentTimeMillis();
 
         saveDefaultConfig();
@@ -43,7 +40,6 @@ public class Lobby extends JavaPlugin {
         loadSettings();
         loadCommands();
 
-        getServer().getConsoleSender().sendMessage("");
         getServer().getConsoleSender().sendMessage(
             ChatColor.GREEN + "Lobby has been " + "enabled (" + (System.currentTimeMillis() - start)
                 + " ms)");
@@ -71,11 +67,6 @@ public class Lobby extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new GeneralPreventionListener(), this);
         Bukkit.getPluginManager().registerEvents(new DoubleJumpListener(), this);
         Bukkit.getPluginManager().registerEvents(new JumpPadListener(), this);
-
-        getServer().getConsoleSender().sendMessage("");
-        getServer().getConsoleSender()
-            .sendMessage(ChatColor.YELLOW + "    Listeners have been enabled");
-        getServer().getConsoleSender().sendMessage("");
     }
 
     /**
@@ -88,20 +79,14 @@ public class Lobby extends JavaPlugin {
 
         spawns = new HashMap<>();
 
-        getServer().getConsoleSender().sendMessage("");
 
         Bukkit.getScheduler().runTaskAsynchronously(this, ()->{
             try (Jedis jedis = DeuelLib.getPool().getResource()) {
                 jedis.subscribe(new PubSub(), "overwatch");
-                getServer().getConsoleSender().sendMessage(ChatColor.YELLOW + "    PubSub enabled");
             }
         });
 
         for (World world : Bukkit.getWorlds()) {
-
-            getServer().getConsoleSender().sendMessage(
-                ChatColor.YELLOW + "    World " + world.getName() + "'s"
-                    + " settings are being loaded");
 
             world.setDifficulty(Difficulty.PEACEFUL);
             world.setAmbientSpawnLimit(0);
@@ -136,12 +121,8 @@ public class Lobby extends JavaPlugin {
 
                 Location location = new Location(world, x, y, z, yaw, pitch);
                 spawns.put(world.getName(), location);
-                getServer().getConsoleSender()
-                    .sendMessage(ChatColor.YELLOW + "        " + world.getName() + " spawn set");
             }
         }
-
-        getServer().getConsoleSender().sendMessage("");
     }
 
 
@@ -151,11 +132,6 @@ public class Lobby extends JavaPlugin {
     private void loadCommands() {
         this.getCommand("setspawn").setExecutor(new SetSpawnCommand());
         this.getCommand("spawn").setExecutor(new SpawnCommand());
-
-        getServer().getConsoleSender().sendMessage("");
-        getServer().getConsoleSender()
-            .sendMessage(ChatColor.YELLOW + "    Commands have been enabled");
-        getServer().getConsoleSender().sendMessage("");
     }
 
     /**
